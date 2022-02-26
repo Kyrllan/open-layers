@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-app-bar color="deep-purple accent-4" dense dark>
-      <v-toolbar-title>Título</v-toolbar-title>
+    <v-app-bar height="90" color="primary" dark class="d-flex justify-center align-center">
+      <v-img src="/logo.png" max-height="100" max-width="160"> </v-img>
     </v-app-bar>
   </div>
 </template>
