@@ -116,9 +116,6 @@ export default {
       this.fetchStationType(),
       this.fetchFeatures(),
     ]);
-    /*     this.fetchStation();
-    this.fetchStationType();
-    this.fetchFeatures(); */
   },
   computed: {
     stations() {
@@ -282,48 +279,3 @@ export default {
   width: 100%;
 }
 </style>
-
-
-
-fetch(
-  "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/poland.geojson"
-)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    var layer = new L.GeoJSON(data, {
-      // A Function that will be called once for each
-      // created Feature, after it has been created and styled
-      onEachFeature: function (feature, layer) {
-        layer.on("mouseover", function (e) {
-          // bindPopup
-          getVoivodeshipName(feature, layer);
-          // show voivodeship
-          addTextToDiv(feature.properties.name);
-          this.openPopup();
-          // style
-          this.setStyle({
-            fillColor: "#eb4034",
-            weight: 2,
-            color: "#eb4034",
-            fillOpacity: 0.7
-          });
-        });
-        layer.on("mouseout", function () {
-          this.closePopup();
-          // style
-          this.setStyle({
-            fillColor: "#3388ff",
-            weight: 2,
-            color: "#3388ff",
-            fillOpacity: 0.2
-          });
-        });
-        layer.on("click", function () {
-          // adding the province name to the visible div
-          addTextToDiv(feature.properties.name);
-        });
-      }
-    }).addTo(map);
-  });

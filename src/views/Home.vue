@@ -5,54 +5,63 @@
     </div>
     <div id="map-root"></div>
 
-    <v-card width="500" class="text-center popup-container">
-      <v-card-title class="headline grey lighten-2"
-        >Dados da Estação</v-card-title
-      >
+    <v-card width="600" class="popup-container">
+      <v-card-title id="card-title">Dados da Estação</v-card-title>
       <v-card-text class="popup-container">
         <v-container fluid class="popup-container">
           <v-row align="center" class="popup-container mb-n7">
-            <v-col class="d-flex" cols="12">
-              <v-btn outlined color="black">
-                <label>Identificador: </label
+            <v-col class="d-flex" cols="3">
+              <v-btn block outlined color="black">
+                <label>ID: </label
                 ><strong class="overlay-text" id="feature-id"></strong><br />
               </v-btn>
-              <v-spacer />
-              <v-btn outlined color="black">
+            </v-col>
+            <v-col cols="9">
+              <v-btn block outlined color="black">
                 <label>Nome: </label
                 ><strong class="overlay-text" id="feature-name"></strong>
               </v-btn>
             </v-col>
-            <v-col class="d-flex" cols="12">
-              <v-btn outlined color="black" block>
-                <label>Latitude:</label>
-                <strong class="overlay-text" id="feature-latitude"></strong>
-              </v-btn>
-            </v-col>
-            <v-col class="d-flex" cols="12">
-              <v-btn outlined color="black" block>
-                <label>Longitude:</label
-                ><strong class="overlay-text" id="feature-longitude"></strong>
-              </v-btn>
-            </v-col>
-            <v-col class="d-flex" cols="12">
-              <v-btn outlined color="black">
-                <label>Elevação:</label
-                ><strong class="overlay-text" id="feature-elevation"></strong>
-              </v-btn>
-              <v-spacer />
-              <v-btn outlined color="black">
+          </v-row>
+          <v-row align="center" class="popup-container mb-n7">
+            <v-col cols="8">
+              <v-btn block outlined color="black">
                 <label>Tipo de Estação:</label
                 ><strong class="overlay-text" id="feature-type"></strong>
               </v-btn>
             </v-col>
-            <v-col class="d-flex" cols="12">
+            <v-col cols="4">
+              <v-btn block outlined color="black">
+                <label>LAT:</label>
+                <strong class="overlay-text" id="feature-latitude"></strong>
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          <v-row align="center" class="popup-container mb-n7">
+            <v-col cols="8">
+              <v-btn block outlined color="black">
+                <label>ELEVAÇÃO: </label
+                ><strong class="overlay-text" id="feature-elevation"></strong>
+              </v-btn>
+            </v-col>
+            <v-col cols="4">
+              <v-btn block outlined color="black">
+                <label>LONG:</label
+                ><strong class="overlay-text" id="feature-longitude"></strong>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row align="center" class="popup-container mb-n7">
+            <v-col cols="12">
               <v-btn outlined color="black" block>
                 <label>Inicio de Operação:</label
                 ><strong class="overlay-text" id="feature-start"></strong>
               </v-btn>
             </v-col>
-            <v-col class="d-flex" cols="12">
+          </v-row>
+          <v-row align="center" class="popup-container mb-n7">
+            <v-col cols="12">
               <v-btn outlined color="black" block>
                 <label>Fim de Operação:</label
                 ><strong class="overlay-text" id="feature-end"></strong>
@@ -62,7 +71,7 @@
         </v-container>
       </v-card-text>
     </v-card>
-    <v-snackbar v-model="snackbar" :timeout="3000" color="secondary">
+    <v-snackbar v-model="snackbar" :timeout="3000" color="secondary" right>
       {{ text }}
 
       <template v-slot:action="{ attrs }">
@@ -88,6 +97,7 @@ import { OSM, Vector as VectorSource } from "ol/source";
 import { Fill, Stroke, Style, Icon, Circle } from "ol/style";
 import Overlay from "ol/Overlay";
 import Filter from "@/components/Filter.vue";
+import dayjs from "dayjs";
 export default {
   name: "App",
   components: {
@@ -101,10 +111,10 @@ export default {
     types: undefined,
     stations: undefined,
     vectorGeoJSON: new VectorLayer(),
-    source: new VectorSource({
-      format: new GeoJSON(),
-      url: "https://raw.githubusercontent.com/Kyrllan/geojson/master/station_list.geojson",
-    }),
+    source: new VectorSource(),
+    mapMark: {
+      id: 0,
+    },
   }),
   async mounted() {
     await this.initiateMap();
@@ -116,27 +126,17 @@ export default {
       this.types = types;
     },
     async getStations(stations) {
+      this.stations = stations;
       if (stations.features.length > 0) {
-        this.stations = stations;
-        if (stations.features.length > 0 && stations.features.length < 125) {
-          this.source.clear();
-          this.source.addFeatures(new GeoJSON().readFeatures(stations));
-        } else if (stations.features.length === 125) {
-          this.source.refresh();
-        } else if (stations.features.length === 0) {
-          this.source.clear();
-        }
+        this.source.clear();
+        this.source.addFeatures(new GeoJSON().readFeatures(stations));
       } else {
+        this.source.clear();
         this.snackbar = true;
         this.text = "Nenhuma estação encontrada.";
       }
     },
     initiateMap() {
-      var imageStyle = new Icon({
-        scale: 1.0,
-        color: "red",
-        src: require("../assets/location_on-white-48dp.svg"),
-      });
       // create vector layer
       var source = new VectorSource();
       var vector = new VectorLayer({
@@ -182,7 +182,7 @@ export default {
         layers: [raster, vector, this.vectorGeoJSON],
         view: new View({
           projection: "EPSG:4326",
-          center: [-51.815011395380765, -24.650150016322684],
+          center: [-48.815011395380765, -24.650150016322684],
           zoom: 7,
         }),
       });
@@ -236,6 +236,7 @@ export default {
       var overlayFeatureType = document.getElementById("feature-type");
       var overlayFeatureStart = document.getElementById("feature-start");
       var overlayFeatureEnd = document.getElementById("feature-end");
+
       map.on("click", function (e) {
         overlayLayer.setPosition(undefined);
         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
@@ -245,8 +246,14 @@ export default {
           overlayFeatureLatitude.innerHTML = feature.get("latitude");
           overlayFeatureLongitude.innerHTML = feature.get("longitude");
           overlayFeatureElevation.innerHTML = feature.get("elevation_meters");
-          overlayFeatureStart.innerHTML = feature.get("operation_start_date");
-          overlayFeatureEnd.innerHTML = feature.get("operation_end_date");
+          overlayFeatureStart.innerHTML = dayjs(
+            feature.get("operation_start_date")
+          ).format("DD/MM/YYYY");
+          //overlayFeatureStart.innerHTML = feature.get("operation_start_date");
+          overlayFeatureEnd.innerHTML = dayjs(
+            feature.get("operation_end_date")
+          ).format("DD/MM/YYYY");
+          //overlayFeatureEnd.innerHTML = feature.get("operation_end_date");
           for (let item in station_type) {
             if (feature.get("station_type_id") == station_type[item].id) {
               overlayFeatureType.innerHTML = station_type[item].name;
@@ -265,7 +272,6 @@ export default {
   height: 100%;
   width: 100%;
 }
-
 #card {
   position: absolute;
   right: 15px;
@@ -274,5 +280,15 @@ export default {
   margin: 0;
   padding: 0;
   max-width: 600px;
+}
+#card-title {
+  display: flex;
+  justify-content: center;
+  color: #ffe589;
+  background-color: #424242;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  width: 100%;
 }
 </style>
