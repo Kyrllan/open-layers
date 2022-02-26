@@ -120,6 +120,7 @@ export default {
   computed: {
     stations() {
       let aux = [];
+      //let aux2 = [];
       if (this.stations_types_selected.length > 0) {
         for (let station in this.stations_types_selected) {
           let filtered = this.station_list.filter((a) => {
@@ -131,6 +132,15 @@ export default {
             aux.push(filtered[item]);
           }
         }
+        /*                for (let station in aux) {
+          let filtered = this.stations_selected.filter((a) => {
+            return a.id === aux[station].id;
+          });
+          for (let item in filtered) {
+            aux2.push(filtered[item]);
+          }
+        }
+        console.log("AUX2", aux2); */
         return aux;
       } else {
         return [];

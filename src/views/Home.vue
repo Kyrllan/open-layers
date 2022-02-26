@@ -32,7 +32,7 @@
             </v-col>
             <v-col cols="4">
               <v-btn block outlined color="black">
-                <label>LAT:</label>
+                <label>Lat:</label>
                 <strong class="overlay-text" id="feature-latitude"></strong>
               </v-btn>
             </v-col>
@@ -41,13 +41,13 @@
           <v-row align="center" class="popup-container mb-n7">
             <v-col cols="8">
               <v-btn block outlined color="black">
-                <label>ELEVAÇÃO: </label
+                <label>Elevação: </label
                 ><strong class="overlay-text" id="feature-elevation"></strong>
               </v-btn>
             </v-col>
             <v-col cols="4">
               <v-btn block outlined color="black">
-                <label>LONG:</label
+                <label>Long:</label
                 ><strong class="overlay-text" id="feature-longitude"></strong>
               </v-btn>
             </v-col>
@@ -73,7 +73,6 @@
     </v-card>
     <v-snackbar v-model="snackbar" :timeout="3000" color="secondary" right>
       {{ text }}
-
       <template v-slot:action="{ attrs }">
         <v-btn icon v-bind="attrs" @click="snackbar = false">
           <v-icon color="red">mdi-close</v-icon>
@@ -276,7 +275,7 @@ export default {
   position: absolute;
   right: 15px;
   top: 15px;
-  z-index: 10;
+  z-index: 1;
   margin: 0;
   padding: 0;
   max-width: 600px;
