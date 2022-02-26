@@ -1,7 +1,6 @@
 # openlayer
 
 ## Exemplo
-```
 https://kyrllan.github.io/open-layers/
 
 ## Project setup
