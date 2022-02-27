@@ -1,102 +1,99 @@
 <template>
-  <div id="filter">
-    <v-card width="500">
-      <v-card-title id="card-title">Filtros</v-card-title>
-      <v-card-text class="d-flex justify-center align-center">
-        <v-container fluid>
-          <v-row class="d-flex justify-center">
-            <v-col cols="12">
-              <v-select
-                v-model="stations_types_selected"
-                :items="station_type_list"
-                class="pt-10"
-                return-object
-                item-text="name"
-                label="Tipo de Estação"
-                multiple
-                outlined
-                chips
-                deletable-chips
-                clearable
-                persistent-hint
-                :hint="`${stations_types_selected.length} Tipos Selecionados`"
-              >
-                <template v-slot:prepend-item>
-                  <v-list-item ripple @click="change">
-                    <v-list-item-action>
-                      <v-icon
-                        :color="someTypes || allTypes ? 'red' : '#757575'"
-                        >{{ iconTypes }}</v-icon
-                      >
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{
-                          someTypes || allTypes
-                            ? "REMOVER SELEÇÃO"
-                            : "SELECIONAR TODOS"
-                        }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider />
-                </template>
-              </v-select>
-            </v-col>
-          </v-row>
-          <v-row class="d-flex justify-center">
-            <v-col cols="12">
-              <v-select
-                v-model="stations_selected"
-                :items="stations"
-                return-object
-                item-key="id"
-                item-text="name"
-                label="Estações"
-                multiple
-                outlined
-                chips
-                clearable
-                deletable-chips
-                :disabled="!stations_types_selected.length > 0"
-                :hide-details="!stations_types_selected.length > 0"
-                :persistent-hint="stations_types_selected.length > 0"
-                :hint="`${stations_selected.length} Opções Selecionadas`"
-              >
-                <template v-slot:prepend-item>
-                  <v-list-item ripple @click="toggle">
-                    <v-list-item-action>
-                      <v-icon
-                        :color="someStations || allStations ? 'red' : '#757575'"
-                        >{{ iconStations }}</v-icon
-                      >
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{
-                          someStations || allStations
-                            ? "Remover Seleção"
-                            : "Selecionar Todos"
-                        }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-divider />
-                </template>
-              </v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-btn color="secondary" block @click="consulting">
-                <v-icon left dark color="terciary"> mdi-magnify</v-icon
-                >Consultar</v-btn
-              >
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card-text>
-    </v-card>
+  <div>
+    <div id="title">
+      <h3 class="pt-3"> Filtros </h3>
+    </div>
+    <v-container fluid>
+      <v-row class="d-flex justify-center">
+        <v-col cols="12">
+          <v-select
+            v-model="stations_types_selected"
+            :items="station_type_list"
+            class="pt-10"
+            return-object
+            item-text="name"
+            label="Tipo de Estação"
+            multiple
+            outlined
+            chips
+            deletable-chips
+            clearable
+            persistent-hint
+            :hint="`${stations_types_selected.length} Tipos Selecionados`"
+          >
+            <template v-slot:prepend-item>
+              <v-list-item ripple @click="change">
+                <v-list-item-action>
+                  <v-icon :color="someTypes || allTypes ? 'red' : '#757575'">{{
+                    iconTypes
+                  }}</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{
+                      someTypes || allTypes
+                        ? "REMOVER SELEÇÃO"
+                        : "SELECIONAR TODOS"
+                    }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider />
+            </template>
+          </v-select>
+        </v-col>
+      </v-row>
+      <v-row class="d-flex justify-center">
+        <v-col cols="12">
+          <v-select
+            v-model="stations_selected"
+            :items="stations"
+            return-object
+            item-key="id"
+            item-text="name"
+            label="Estações"
+            multiple
+            outlined
+            chips
+            clearable
+            deletable-chips
+            :disabled="!stations_types_selected.length > 0"
+            :hide-details="!stations_types_selected.length > 0"
+            :persistent-hint="stations_types_selected.length > 0"
+            :hint="`${stations_selected.length} Opções Selecionadas`"
+          >
+            <template v-slot:prepend-item>
+              <v-list-item ripple @click="toggle">
+                <v-list-item-action>
+                  <v-icon
+                    :color="someStations || allStations ? 'red' : '#757575'"
+                    >{{ iconStations }}</v-icon
+                  >
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{
+                      someStations || allStations
+                        ? "Remover Seleção"
+                        : "Selecionar Todos"
+                    }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider />
+            </template>
+          </v-select>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-btn color="secondary" block @click="consulting">
+            <v-icon left dark color="terciary"> mdi-magnify</v-icon
+            >Consultar</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -278,13 +275,12 @@ export default {
   height: 100%;
   width: 100%;
 }
-#card-title {
+#title {
   display: flex;
   justify-content: center;
   color: #ffe589;
   background-color: #424242;
-  margin: 0;
-  padding: 0;
+  margin-top: 80px;
   height: 50px;
   width: 100%;
 }

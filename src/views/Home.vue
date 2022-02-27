@@ -1,85 +1,99 @@
 <template>
-  <v-main style="height: 100%">
-    <div id="card">
+  <div>
+    <v-app-bar app clipped-right height="80" color="primary" dark>
+      <v-img src="/logo.png" max-height="85" max-width="140"> </v-img>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" @click="filterDrawer = !filterDrawer">
+        <v-icon color="terciary">mdi-filter</v-icon>Filtros
+      </v-btn>
+    </v-app-bar>
+    <v-navigation-drawer
+      width="400"
+      absolute
+      clipped
+      right
+      v-model="filterDrawer"
+    >
       <filter-stations @stations="getStations" @types="getTypes" />
-    </div>
-    <div id="map-root"></div>
+    </v-navigation-drawer>
+    <v-main style="height: 100vh">
+      <div id="map-root"></div>
+      <v-card width="600" class="popup-container">
+        <v-card-title id="card-title">Dados da Estação</v-card-title>
+        <v-card-text class="popup-container">
+          <v-container fluid class="popup-container">
+            <v-row align="center" class="popup-container mb-n7">
+              <v-col class="d-flex" cols="3">
+                <v-btn block outlined color="black">
+                  <label>ID: </label
+                  ><strong class="overlay-text" id="feature-id"></strong><br />
+                </v-btn>
+              </v-col>
+              <v-col cols="9">
+                <v-btn block outlined color="black">
+                  <label>Nome: </label
+                  ><strong class="overlay-text" id="feature-name"></strong>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row align="center" class="popup-container mb-n7">
+              <v-col cols="8">
+                <v-btn block outlined color="black">
+                  <label>Tipo de Estação:</label
+                  ><strong class="overlay-text" id="feature-type"></strong>
+                </v-btn>
+              </v-col>
+              <v-col cols="4">
+                <v-btn block outlined color="black">
+                  <label>Lat:</label>
+                  <strong class="overlay-text" id="feature-latitude"></strong>
+                </v-btn>
+              </v-col>
+            </v-row>
 
-    <v-card width="600" class="popup-container">
-      <v-card-title id="card-title">Dados da Estação</v-card-title>
-      <v-card-text class="popup-container">
-        <v-container fluid class="popup-container">
-          <v-row align="center" class="popup-container mb-n7">
-            <v-col class="d-flex" cols="3">
-              <v-btn block outlined color="black">
-                <label>ID: </label
-                ><strong class="overlay-text" id="feature-id"></strong><br />
-              </v-btn>
-            </v-col>
-            <v-col cols="9">
-              <v-btn block outlined color="black">
-                <label>Nome: </label
-                ><strong class="overlay-text" id="feature-name"></strong>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row align="center" class="popup-container mb-n7">
-            <v-col cols="8">
-              <v-btn block outlined color="black">
-                <label>Tipo de Estação:</label
-                ><strong class="overlay-text" id="feature-type"></strong>
-              </v-btn>
-            </v-col>
-            <v-col cols="4">
-              <v-btn block outlined color="black">
-                <label>Lat:</label>
-                <strong class="overlay-text" id="feature-latitude"></strong>
-              </v-btn>
-            </v-col>
-          </v-row>
-
-          <v-row align="center" class="popup-container mb-n7">
-            <v-col cols="8">
-              <v-btn block outlined color="black">
-                <label>Elevação: </label
-                ><strong class="overlay-text" id="feature-elevation"></strong>
-              </v-btn>
-            </v-col>
-            <v-col cols="4">
-              <v-btn block outlined color="black">
-                <label>Long:</label
-                ><strong class="overlay-text" id="feature-longitude"></strong>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row align="center" class="popup-container mb-n7">
-            <v-col cols="12">
-              <v-btn outlined color="black" block>
-                <label>Inicio de Operação:</label
-                ><strong class="overlay-text" id="feature-start"></strong>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row align="center" class="popup-container mb-n7">
-            <v-col cols="12">
-              <v-btn outlined color="black" block>
-                <label>Fim de Operação:</label
-                ><strong class="overlay-text" id="feature-end"></strong>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card-text>
-    </v-card>
-    <v-snackbar v-model="snackbar" :timeout="3000" color="secondary" right>
-      {{ text }}
-      <template v-slot:action="{ attrs }">
-        <v-btn icon v-bind="attrs" @click="snackbar = false">
-          <v-icon color="red">mdi-close</v-icon>
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </v-main>
+            <v-row align="center" class="popup-container mb-n7">
+              <v-col cols="8">
+                <v-btn block outlined color="black">
+                  <label>Elevação: </label
+                  ><strong class="overlay-text" id="feature-elevation"></strong>
+                </v-btn>
+              </v-col>
+              <v-col cols="4">
+                <v-btn block outlined color="black">
+                  <label>Long:</label
+                  ><strong class="overlay-text" id="feature-longitude"></strong>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row align="center" class="popup-container mb-n7">
+              <v-col cols="12">
+                <v-btn outlined color="black" block>
+                  <label>Inicio de Operação:</label
+                  ><strong class="overlay-text" id="feature-start"></strong>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row align="center" class="popup-container mb-n7">
+              <v-col cols="12">
+                <v-btn outlined color="black" block>
+                  <label>Fim de Operação:</label
+                  ><strong class="overlay-text" id="feature-end"></strong>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+      </v-card>
+      <v-snackbar v-model="snackbar" :timeout="3000" color="secondary">
+        {{ text }}
+        <template v-slot:action="{ attrs }">
+          <v-btn icon v-bind="attrs" @click="snackbar = false">
+            <v-icon color="red">mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-main>
+  </div>
 </template>
 
 <script>
@@ -103,6 +117,7 @@ export default {
     "filter-stations": Filter,
   },
   data: () => ({
+    filterDrawer: false,
     snackbar: false,
     text: "",
     station_type_id: undefined,
