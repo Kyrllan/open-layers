@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="title">
-      <h3 class="pt-3"> Filtros </h3>
+      <h3 class="pt-3">Filtros</h3>
     </div>
     <v-container fluid>
       <v-row class="d-flex justify-center">
@@ -20,6 +20,7 @@
             clearable
             persistent-hint
             :hint="`${stations_types_selected.length} Tipos Selecionados`"
+            @change="changeSelect()"
           >
             <template v-slot:prepend-item>
               <v-list-item ripple @click="change">
@@ -117,7 +118,6 @@ export default {
   computed: {
     stations() {
       let aux = [];
-      //let aux2 = [];
       if (this.stations_types_selected.length > 0) {
         for (let station in this.stations_types_selected) {
           let filtered = this.station_list.filter((a) => {
@@ -129,15 +129,6 @@ export default {
             aux.push(filtered[item]);
           }
         }
-        /*                for (let station in aux) {
-          let filtered = this.stations_selected.filter((a) => {
-            return a.id === aux[station].id;
-          });
-          for (let item in filtered) {
-            aux2.push(filtered[item]);
-          }
-        }
-        console.log("AUX2", aux2); */
         return aux;
       } else {
         return [];
@@ -189,6 +180,16 @@ export default {
     },
   },
   methods: {
+    changeSelect() {
+      let aux = [];
+      for (let item of this.stations) {
+        let index = this.stations_selected.map((e) => e.id).indexOf(item.id);
+        if (index > -1) {
+          aux.push(item);
+        }
+      }
+      this.stations_selected = aux;
+    },
     async fetchFeatures() {
       await fetch(
         "https://raw.githubusercontent.com/Kyrllan/geojson/master/station_list.geojson"
