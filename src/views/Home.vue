@@ -18,8 +18,14 @@
     </v-navigation-drawer>
     <v-main style="height: 100vh">
       <div id="map-root"></div>
-      <v-card width="600" class="popup-container">
-        <v-card-title id="card-title">Dados da Estação</v-card-title>
+      <v-card width="600" class="popup-container" id="card-details">
+        <v-card-title id="card-title" class="px-3"
+          >Dados da Estação
+          <v-spacer></v-spacer>
+          <v-btn @click="closePopUp" small icon color="red"
+            ><v-icon>mdi-close</v-icon></v-btn
+          >
+        </v-card-title>
         <v-card-text class="popup-container">
           <v-container fluid class="popup-container">
             <v-row align="center" class="popup-container mb-n7">
@@ -136,6 +142,11 @@ export default {
   computed: {},
   watch: {},
   methods: {
+    closePopUp() {
+      let cardDetails = document.getElementById("card-details");
+      cardDetails.style.visibility = "hidden";
+      cardDetails.style.display = "none";
+    },
     async getTypes(types) {
       this.types = types;
     },
@@ -274,6 +285,9 @@ export default {
             }
           }
         });
+        let cardDetails = document.getElementById("card-details");
+        cardDetails.style.visibility = "visible";
+        cardDetails.style.display = "block";
       });
     },
   },
@@ -296,8 +310,6 @@ export default {
   max-width: 600px;
 }
 #card-title {
-  display: flex;
-  justify-content: center;
   color: #ffe589;
   background-color: #424242;
   margin: 0;
